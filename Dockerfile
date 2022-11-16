@@ -6,4 +6,6 @@ WORKDIR /usr/app/src
 
 COPY kube-bench-NR-forwarder.py ./
 
+#TODO: pip install 
+
 CMD [ "python", "./kube-bench-NR-forwarder.py"]

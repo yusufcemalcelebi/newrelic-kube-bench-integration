@@ -2,25 +2,25 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: kube-bench
+  name: newrelic-kube-bench-integration
 spec:
   template:
     metadata:
       labels:
-        app: kube-bench
+        app: newrelic-kube-bench-integration
     spec:
       hostPID: true
       containers:
-        - name: python-app
-          image: busybox:1.28
-          command: ['sh', '-c', 'cat $(report); printf KEY_NR=$NR_KEY']
+        - name: newrelic-kube-bench-forwarder
+          image: busybox:1.28 #TODO: use proper docker image reference 
+          command: ['sh', '-c', 'cat $(REPORT_FILE_DIRECTORY); printf KEY_NR=$NEW_RELIC_LICENCE_KEY'] #TODO: 
           env:
-          - name: NR_KEY
+          - name: NEW_RELIC_LICENCE_KEY
             valueFrom:
               secretKeyRef:
                 name: nr-api-key-secret
                 key: apikey
-          - name: report
+          - name: REPORT_FILE_DIRECTORY
             value: "/report/report.json"
           volumeMounts:
           - mountPath: /report
@@ -28,9 +28,9 @@ spec:
       initContainers:
       - name: kube-bench
         image: docker.io/aquasec/kube-bench:v0.6.10
-        command: ["kube-bench", "--json", "--outputfile", "$(report)"]
+        command: ["kube-bench", "--json", "--outputfile", "$(REPORT_FILE_DIRECTORY)"]
         env:
-        - name: report
+        - name: REPORT_FILE_DIRECTORY
           value: "/report/report.json"
         volumeMounts:
           - name: report-directory
@@ -113,7 +113,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  apikey: Mzk1MjgkdmRnN0pi
+  apikey: Mzk1MjgkdmRnN0pi #TODO: use proper secret here
 kind: Secret
 metadata:
   name: nr-api-key-secret

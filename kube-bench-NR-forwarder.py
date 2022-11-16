@@ -4,7 +4,7 @@ import os
 import requests
 
 # Read environment variables
-FILE_NAME = os.getenv("REPORT_FILE_NAME", "kube-bench-output.json")
+FILE_NAME = os.getenv("REPORT_FILE_DIRECTORY", "kube-bench-output.json")
 NEW_RELIC_LICENCE_KEY = os.getenv("NEW_RELIC_LICENCE_KEY")
 NEW_RELIC_SECURITY_DATA_API_URL = "https://security-api.newrelic.com/security/v1"
 
