@@ -22,6 +22,8 @@ spec:
                 key: apikey
           - name: REPORT_FILE_DIRECTORY
             value: "/report/report.json"
+          - name: CLUSTER_NAME
+            value: "minikube" #TODO: make sure cluster name is correct
           volumeMounts:
           - mountPath: /report
             name: report-directory

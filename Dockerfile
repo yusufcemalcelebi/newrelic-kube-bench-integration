@@ -5,7 +5,10 @@ LABEL Maintainer="yusufcelebi@teambion.com"
 WORKDIR /usr/app/src
 
 COPY kube-bench-NR-forwarder.py ./
+COPY requirements.txt ./
+# Uncomment for local testing 
+# COPY kube-bench-output.json ./
 
-#TODO: pip install 
+RUN pip3 install -r requirements.txt
 
-CMD [ "python", "./kube-bench-NR-forwarder.py"]
+CMD [ "python3", "./kube-bench-NR-forwarder.py"]

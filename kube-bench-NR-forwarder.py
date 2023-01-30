@@ -7,6 +7,7 @@ import requests
 FILE_NAME = os.getenv("REPORT_FILE_DIRECTORY", "kube-bench-output.json")
 NEW_RELIC_LICENCE_KEY = os.getenv("NEW_RELIC_LICENCE_KEY")
 NEW_RELIC_SECURITY_DATA_API_URL = "https://security-api.newrelic.com/security/v1"
+CLUSTER_NAME = os.getenv("CLUSTER_NAME", "minikube")
 
 
 def main():
@@ -24,8 +25,8 @@ def main():
         node_type = testGroup["node_type"]
 
         for testSubSection in testGroup["tests"]:
-            logging.info(f'Sub Section Id, {testSubSection["section"]}')
-            logging.info(f'Description, {testSubSection["desc"]}')
+            print(f'Sub Section Id, {testSubSection["section"]}')
+            print(f'Description, {testSubSection["desc"]}')
 
             for testResult in testSubSection["results"]:
                 status = testResult["status"]
@@ -48,19 +49,15 @@ def main():
 
                 response = requests.post(
                     NEW_RELIC_SECURITY_DATA_API_URL,
-                    data=requestBody,
+                    json=requestBody,
                     headers=requestHeaders,
                 )
 
-                logging.info("Response Status code: ", response.status_code)
+                print("Response Status code: ", response.status_code)
 
                 response_Json = response.json()
-                logging.info("Printing Post JSON data")
-                logging.info(response_Json["data"])
-
-                logging.info(
-                    "Content-Type is ", response_Json["headers"]["Content-Type"]
-                )
+                print("Printing Post JSON data")
+                print(response_Json)
 
 
 def readTestDictionaryFromJSONFile(inputFileName: str):
@@ -94,7 +91,7 @@ def getRequestBody(
                 "remediationExists": "true",
                 "remediationRecommendation": remediation,
                 "entityType": "Kubernetes cluster",
-                "entityLookupValue": "Cluster Name",  # TODO: Change it with the cluster name
+                "entityLookupValue": CLUSTER_NAME,
             },
         ]
     }
