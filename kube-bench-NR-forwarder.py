@@ -12,6 +12,7 @@ CLUSTER_NAME = os.getenv("CLUSTER_NAME", "minikube")
 
 def main():
     if NEW_RELIC_LICENCE_KEY is None:
+        print("Licence Key is not found! Set NEW_RELIC_LICENCE_KEY properly")
         exit(1)
 
     testDictionary = readTestDictionaryFromJSONFile(FILE_NAME)
