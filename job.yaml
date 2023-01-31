@@ -12,8 +12,7 @@ spec:
       hostPID: true
       containers:
         - name: newrelic-kube-bench-forwarder
-          image: busybox:1.28 #TODO: use proper docker image reference 
-          command: ['sh', '-c', 'cat $(REPORT_FILE_DIRECTORY); printf KEY_NR=$NEW_RELIC_LICENCE_KEY'] #TODO: 
+          image: ekininaal/nr-security-api-parser:v1
           env:
           - name: NEW_RELIC_LICENCE_KEY
             valueFrom:
@@ -115,7 +114,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  apikey: Mzk1MjgkdmRnN0pi #TODO: use proper secret here
+  apikey: changeme
 kind: Secret
 metadata:
   name: nr-api-key-secret
